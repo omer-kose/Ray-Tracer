@@ -4,7 +4,7 @@
 #include "Ray.h"
 
 
-bool hit_sphere(const Point3 &center, double radius, const Ray &ray)
+double hit_sphere(const Point3 &center, double radius, const Ray &ray)
 {
 	Vec3 centerToOrigin = ray.getOrigin() - center;
 	Vec3 rayDir = ray.getDir();
@@ -14,17 +14,30 @@ bool hit_sphere(const Point3 &center, double radius, const Ray &ray)
 	auto b = 2.0 * dot(centerToOrigin, rayDir);
 	auto c = dot(centerToOrigin, centerToOrigin) - (radius * radius);
 	auto discriminant = b * b - 4.0 * a * c;
-	return (discriminant > 0);
+	if (discriminant < 0)
+	{
+		return -1.0;/*We did not hit so no contribution*/
+	}
+	else
+	{
+		return (-b - sqrt(discriminant)) / (2.0 * a);
+	}
+	
 }
 Color ray_color(const Ray &r)
 {
-	if (hit_sphere(Point3(0, 0, -1), 0.5, r))
+	auto t = hit_sphere(Point3(0.0, 0.0, -1.0), 0.5, r);
+	if (t > 0.0)
 	{
-		return Color(1.0, 0.0, 0.0);
+		Vec3 normal = unit_vector((r.at(t) - Vec3(0.0,0.0,-1.0)));
+		//Each component of a normalized vector ranges between -1.0 to 1.0 so to map them
+		//from 0.0 to 1.0 we will do classical mapping trick in graphics. (Since we will use them as colors)
+		//Colors ranges from 0.0 to 1.0
+		return 0.5 * Color(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0);
 	}
 	Vec3 unit_direction = unit_vector(r.getDir());
 	/*Y goes from -1 to 1 approximately(on image plane we do our calculation wrt image plane)*/
-	auto t = 0.5 * (unit_direction.y() + 1.0); /*T is an interpolator so we map y between 0 to 1*/
+	t = 0.5 * (unit_direction.y() + 1.0); /*T is an interpolator so we map y between 0 to 1*/
 	return (1 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);/*Linear interpolation*/
 }
 
