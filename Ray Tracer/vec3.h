@@ -47,14 +47,65 @@ public:
 	{
 		return sqrt(length_squared());
 	}
-
-	/*Utility Functions*/
-
-
-
 public:
 	double e[3];
 };
+
+/*Utility Functions*/
+/*When an operator is defined inside, left operand is current instance. Therefore, to be able to define
+in this way (using any vector not only current instance we need to define it outside of class)*/
+
+inline std::ostream& operator<<(std::ostream &out, const Vec3 &v)
+{
+	return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
+}
+
+inline Vec3 operator+(const Vec3& lhs, const Vec3& rhs)
+{
+	return Vec3(lhs.e[0] + rhs.e[0], lhs.e[1] + rhs.e[1], lhs.e[2] + rhs.e[2]);
+}
+
+inline Vec3 operator-(const Vec3& lhs, const Vec3& rhs)
+{
+	return Vec3(lhs.e[0] - rhs.e[0], lhs.e[1] - rhs.e[1], lhs.e[2] - rhs.e[2]);
+}
+
+inline Vec3 operator*(const Vec3 &lhs, const Vec3 &rhs)/*Hadamard Product*/
+{
+	return Vec3(lhs.e[0] * rhs.e[0], lhs.e[1] * rhs.e[1], lhs.e[2] * rhs.e[2]);
+}
+
+inline Vec3 operator*(double t, const Vec3 &v)
+{
+	return Vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
+}
+/*Multiplication by a scalar is commutative*/
+inline Vec3 operator*(const Vec3 &v, double t) 
+{
+	return t * v;
+}
+
+inline Vec3 operator/(const Vec3 &v, double t)
+{
+	return (1/t) * v;
+}
+
+inline double dot(const Vec3 &lhs, const Vec3 &rhs)
+{
+	return lhs.e[0] * rhs.e[0] + lhs.e[1] * rhs.e[1] + lhs.e[2] * rhs.e[2];
+}
+
+inline Vec3 cross(const Vec3 &lhs, const Vec3 &rhs)
+{
+	return Vec3(lhs.e[1] * rhs.e[2] - lhs.e[2] * rhs.e[1],
+		lhs.e[2] * rhs.e[0] - lhs.e[0] * rhs.e[2],
+		lhs.e[0] * rhs.e[1] - lhs.e[1] * rhs.e[0]);
+}
+
+inline Vec3 unit_vector(Vec3 v)
+{
+	return v / v.length();
+}
 
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
