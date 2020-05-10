@@ -3,8 +3,25 @@
 #include "Color.h"
 #include "Ray.h"
 
+
+bool hit_sphere(const Point3 &center, double radius, const Ray &ray)
+{
+	Vec3 centerToOrigin = ray.getOrigin() - center;
+	Vec3 rayDir = ray.getDir();
+	/*a,b,c are coefficients of quadratic equation: (dir*dir) t^2 + (2*cto*dir) + (cto*cto) - r^2 = 0*/
+	/*Remember that dir and cto are vectors so we use dot product to multiply them*/
+	auto a = dot(rayDir, rayDir);
+	auto b = 2.0 * dot(centerToOrigin, rayDir);
+	auto c = dot(centerToOrigin, centerToOrigin) - (radius * radius);
+	auto discriminant = b * b - 4.0 * a * c;
+	return (discriminant > 0);
+}
 Color ray_color(const Ray &r)
 {
+	if (hit_sphere(Point3(0, 0, -1), 0.5, r))
+	{
+		return Color(1.0, 0.0, 0.0);
+	}
 	Vec3 unit_direction = unit_vector(r.getDir());
 	/*Y goes from -1 to 1 approximately(on image plane we do our calculation wrt image plane)*/
 	auto t = 0.5 * (unit_direction.y() + 1.0); /*T is an interpolator so we map y between 0 to 1*/
