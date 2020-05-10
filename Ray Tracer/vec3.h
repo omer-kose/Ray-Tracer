@@ -53,7 +53,7 @@ public:
 
 /*Utility Functions*/
 /*When an operator is defined inside, left operand is current instance. Therefore, to be able to define
-in this way (using any vector not only current instance we need to define it outside of class)*/
+in this way we have to define them outside of the class(using any vector not only current instance we need to define it outside of class)*/
 
 inline std::ostream& operator<<(std::ostream &out, const Vec3 &v)
 {
