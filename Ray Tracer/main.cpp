@@ -11,16 +11,16 @@ double hit_sphere(const Point3 &center, double radius, const Ray &ray)
 	/*a,b,c are coefficients of quadratic equation: (dir*dir) t^2 + (2*cto*dir) + (cto*cto) - r^2 = 0*/
 	/*Remember that dir and cto are vectors so we use dot product to multiply them*/
 	auto a = dot(rayDir, rayDir);
-	auto b = 2.0 * dot(centerToOrigin, rayDir);
+	auto half_b = dot(centerToOrigin, rayDir);
 	auto c = dot(centerToOrigin, centerToOrigin) - (radius * radius);
-	auto discriminant = b * b - 4.0 * a * c;
+	auto discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
 	{
 		return -1.0;/*We did not hit so no contribution*/
 	}
 	else
 	{
-		return (-b - sqrt(discriminant)) / (2.0 * a);
+		return (-half_b - sqrt(discriminant)) / (a);
 	}
 	
 }
