@@ -1,4 +1,6 @@
 #include <iostream>
+#include "vec3.h"
+#include "Color.h"
 
 int main()
 {
@@ -15,12 +17,8 @@ int main()
 			auto r = double(i) / (image_width - 1);//From left to right, red channel goes from black to full brightness.
 			auto g = double(j) / (image_height - 1);//From top to bottom, green channel goes from black to full brightness
 			auto b = 0.25;
-
-			int ir = static_cast<int>(255.000 * r);
-			int ig = static_cast<int>(255.000 * g);
-			int ib = static_cast<int>(255.000 * b);
-
-			std::cout << ir << ' ' << ig << ' ' << ib << '\n';
+			Color pixel_color(r, g, b);
+			write_color(std::cout, pixel_color);
 		}
 	}
 
