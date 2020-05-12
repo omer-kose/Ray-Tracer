@@ -47,6 +47,18 @@ public:
 	{
 		return sqrt(length_squared());
 	}
+
+	inline static Vec3 random()
+	{
+		return Vec3(random_double(), random_double(), random_double());
+	}
+	inline static Vec3 random(double min, double max)
+	{
+		return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+	}
+
+	
+
 public:
 	double e[3];
 };
@@ -106,6 +118,16 @@ inline Vec3 unit_vector(Vec3 v)
 {
 	return v / v.length();
 }
+Vec3 random_in_unit_sphere()
+{
+	while (true)
+	{
+		auto p = Vec3::random(-1.0, 1.0);
+		if (p.length_squared() >= 1.0) continue;
+		return p;
+	}
+}
+
 
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use

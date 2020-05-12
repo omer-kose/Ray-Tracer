@@ -7,13 +7,14 @@
 #include "Camera.h"
 
 
-Color ray_color(const Ray &ray, const Hittable &world)
+Color ray_color(const Ray &ray, const Hittable_List &world)
 {
 	hit_record rec;
 	/*Objects*/
 	if (world.hit(ray, 0.0, infinity, rec))
 	{
-		return 0.5 * (rec.normal + Color(1.0, 1.0, 1.0));
+		Point3 target = rec.p + rec.normal + random_in_unit_sphere();
+		return 0.5 * ray_color(Ray(rec.p, target - rec.p), world);
 	}
 	Vec3 unit_direction = unit_vector(ray.getDir());
 	/*Y goes from -1 to 1 approximately(on image plane we do our calculation wrt image plane)*/
@@ -43,7 +44,7 @@ int main()
 
 	Hittable_List world;
 	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
-	world.add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0));
+	world.add(make_shared<Sphere>(Point3(0.0, -105.5, -1.0), 100.0));
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom
