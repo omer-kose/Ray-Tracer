@@ -129,6 +129,8 @@ Vec3 random_in_unit_sphere()
 }
 
 
+
+
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
 using Point3 = Vec3; /*3D Point*/

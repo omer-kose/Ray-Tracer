@@ -16,7 +16,11 @@ Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is
 		return Color(0.0, 0.0, 0.0);
 	}
 	/*Objects*/
-	if (world.hit(ray, 0.0, infinity, rec))
+	/*0.001 because of floating point approximation errors. */
+	/*Computer might not distinguish whether ray hit to the object or not since at intersection point
+	t is very small. Therefore, it might interpret it as a not hit point so, we compensate that by
+	adding using an epsilon 0.001*/
+	if (world.hit(ray, 0.001, infinity, rec))
 	{
 		Point3 target = rec.p + rec.normal + random_in_unit_sphere();
 		return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
