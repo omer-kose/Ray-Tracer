@@ -15,7 +15,7 @@ public:
 		horizontal = Vec3(4.0, 0.0, 0.0);
 		vertical = Vec3(0.0, 2.0, 0.0);
 	}
-	/*U and V are parameter who ranges from 0.0 to 1.0 depending on pixel/dimension*/
+	/*U and V are parameter which range from 0.0 to 1.0 depending on (pixel/dimension)*/
 	/*u = colIndex/width*/
 	/*v = rowIndex/height*/
 	Ray getRay(double u, double v) const
