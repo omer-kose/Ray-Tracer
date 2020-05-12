@@ -50,7 +50,7 @@ int main()
 
 	Hittable_List world;
 	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
-	world.add(make_shared<Sphere>(Point3(0.0, -105.5, -1.0), 100.0));
+	world.add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0));
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom
