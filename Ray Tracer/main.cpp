@@ -4,6 +4,7 @@
 
 #include "Hittable_List.h"
 #include "Sphere.h"
+#include "Camera.h"
 
 
 Color ray_color(const Ray &ray, const Hittable &world)
@@ -26,6 +27,7 @@ int main()
 	constexpr auto aspect_ratio = 16.0 / 9.0;
 	constexpr int image_width = 384;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
+	constexpr int samples_per_pixel = 100;
 
 	std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 	/*Using Right Handed Coordinate System*/
@@ -36,6 +38,8 @@ int main()
 	/*We are casting our rays relative to lower_left_corner*/
 	Point3 lower_left_corner(-2.0,-1.0,-1.0);/*Image plane has an offset of 1 along -z dir*/
 	//IMAGE PLANE DEF ENDS
+	/*Camera*/
+	Camera cam;
 
 	Hittable_List world;
 	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
@@ -47,11 +51,17 @@ int main()
 		std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
 		for (int i = 0; i < image_width; i++)//From left to right
 		{
-			auto u = double(i) / (image_width - 1);/*Ranges from 0 to 1 along x axis (left to right)*/
-			auto v = double(j) / (image_height - 1);/*Ranges from 0 to 1 along y axis (Top to bottom)*/
-			Ray r(rayOrigin, lower_left_corner + u * horizontal + v * vertical);
-			Color pixel_color = ray_color(r, world);
-			write_color(std::cout, pixel_color);
+			/*Pixel's color*/
+			Color pixel_color(0.0,0.0,0.0);
+			/*For every pixel we will cast multiple pixels*/
+			for (int s = 0; s < samples_per_pixel; s++)
+			{
+				auto u = (i + random_double()) / (image_width - 1);/*Ranges from 0 to 1 along x axis (left to right)*/
+				auto v = (j + random_double()) / (image_height - 1);/*Ranges from 0 to 1 along y axis (Top to bottom)*/
+				Ray r = cam.getRay(u,v);
+				pixel_color += ray_color(r, world);
+			}
+			write_color(std::cout, pixel_color,samples_per_pixel);
 		}
 	}
 
