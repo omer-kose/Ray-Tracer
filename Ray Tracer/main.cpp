@@ -22,7 +22,7 @@ Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is
 	adding using an epsilon 0.001*/
 	if (world.hit(ray, 0.001, infinity, rec))
 	{
-		Point3 target = rec.p + rec.normal + random_unit_vector();
+		Point3 target = rec.p + rec.normal + random_in_hemisphere(rec.normal);
 		return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
 	}
 	Vec3 unit_direction = unit_vector(ray.getDir());

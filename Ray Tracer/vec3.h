@@ -128,6 +128,19 @@ Vec3 random_unit_vector()/*Returns a random point on the unit sphere*/
 	auto r = sqrt(1 - z * z );
 	return Vec3(r*cos(angle), r*sin(angle), z);
 }
+Vec3 random_in_hemisphere(const Vec3 &normal)
+{
+	Vec3 in_unit_sphere = random_unit_vector();
+	if (dot(normal, in_unit_sphere) > 0.0) /*In the hemisphere*/
+	{
+		return in_unit_sphere;
+	}
+	else
+	{
+		return -in_unit_sphere;
+	}
+}
+
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
 using Point3 = Vec3; /*3D Point*/
