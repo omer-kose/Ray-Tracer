@@ -2,12 +2,21 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
+#include "Utility.h"
 #include "Ray.h"
+
+/*Hittables and materials need to know each other so there is some circularity of the references
+So we forward declare material class to be able to create references to it, without needing to know
+layout of the class*/
+/*By forward declaring: We avoid including Material.h , which slightly speeds up compilation time*/
+class Material;
+
 
 struct hit_record
 {
 	Point3 p;
 	Vec3 normal;
+	shared_ptr<Material> mat_ptr;
 	double t;
 	bool front_face;
 

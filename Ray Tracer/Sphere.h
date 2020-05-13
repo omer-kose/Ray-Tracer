@@ -9,15 +9,17 @@ class Sphere : public Hittable
 {
 public:
 	Sphere() {};
-	Sphere(Point3 cen, double r)
+	Sphere(Point3 cen, double r, shared_ptr<Material> m)
 		:
 		center(cen),
-		radius(r)
+		radius(r),
+		mat_ptr(m)
 	{};
 	virtual bool hit(const Ray &ray, double t_min, double t_max, hit_record &rec) const;
 public:
 	Point3 center;
 	double radius;
+	shared_ptr<Material> mat_ptr;
 };
 
 
@@ -44,6 +46,7 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 												    since it is from center to surface, its length is exactly radius.*/
 			
 			rec.set_face_normal(ray, outward_normal);
+			rec.mat_ptr = mat_ptr;
 			return true;
 		}
 		t = (-half_b + root) / a;
@@ -53,6 +56,7 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 			rec.p = ray.at(t);
 			Vec3 outward_normal = (rec.p - center) / radius;
 			rec.set_face_normal(ray, outward_normal);
+			rec.mat_ptr = mat_ptr;
 			return true;
 		}
 	}
