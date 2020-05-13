@@ -118,19 +118,16 @@ inline Vec3 unit_vector(Vec3 v)
 {
 	return v / v.length();
 }
-Vec3 random_in_unit_sphere()
+Vec3 random_unit_vector()/*Returns a random point on the unit sphere*/
 {
-	while (true)
-	{
-		auto p = Vec3::random(-1.0, 1.0);
-		if (p.length_squared() >= 1.0) continue;
-		return p;
-	}
+	auto angle = random_double(0.0, 2 * pi);
+	/*Z coordinate of the point*/
+	auto z = random_double(-1.0, 1.0);
+	/*r is used to keep radius normalized it scales x and y coordinates of point*/
+	/*(r*cosa)^2 + (r*sina)^2 + z^2 = 1 then r is:*/
+	auto r = sqrt(1 - z * z );
+	return Vec3(r*cos(angle), r*sin(angle), z);
 }
-
-
-
-
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
 using Point3 = Vec3; /*3D Point*/
