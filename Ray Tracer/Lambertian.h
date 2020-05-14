@@ -14,7 +14,7 @@ public:
 		/*Lambertian scatter direction*/
 		/*Offsetting with normal so that we create a unit tangent sphere at the intersection point*/
 		/*Therefore, scattered rays wont go inside of the sphere*/
-		Vec3 scattered_direction = rec.normal + random_unit_vector();
+		Vec3 scattered_direction = rec.normal + random_in_unit_sphere();
 		/*Creating a new ray with origin at interseciton point*/
 		scattered = Ray(rec.p, scattered_direction);
 		attenuation = albedo;
