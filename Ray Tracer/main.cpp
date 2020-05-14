@@ -1,10 +1,13 @@
 #include <iostream>
 #include "Utility.h"
-
-
+#include "Material.h"
 #include "Hittable_List.h"
 #include "Sphere.h"
 #include "Camera.h"
+#include "Lambertian.h"
+#include "Metal.h"
+
+
 
 
 Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is the recursive depth*/
@@ -15,6 +18,7 @@ Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is
 	{
 		return Color(0.0, 0.0, 0.0);
 	}
+	
 	/*Objects*/
 	/*0.001 because of floating point approximation errors. */
 	/*Computer might not distinguish whether ray hit to the object or not since at intersection point
@@ -22,8 +26,13 @@ Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is
 	adding using an epsilon 0.001*/
 	if (world.hit(ray, 0.001, infinity, rec))
 	{
-		Point3 target = rec.p + rec.normal + random_in_hemisphere(rec.normal);
-		return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
+		Ray scattered;
+		Color attenuation;
+		if (rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+		{
+			return attenuation * ray_color(scattered, world, depth-1);
+		}
+		return Color(0.0, 0.0, 0.0);
 	}
 	Vec3 unit_direction = unit_vector(ray.getDir());
 	/*Y goes from -1 to 1 approximately(on image plane we do our calculation wrt image plane)*/
@@ -53,8 +62,12 @@ int main()
 	Camera cam;
 
 	Hittable_List world;
-	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5));
-	world.add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0));
+	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5,make_shared<Lambertian>(Color(0.7,0.3,0.3))));
+	world.add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100, make_shared<Lambertian>(Color(0.8, 0.8, 0.0))));
+
+
+	world.add(make_shared<Sphere>(Point3(1, 0, -1), 0.5, make_shared<Metal>(Color(0.8, 0.6, 0.2))));
+	world.add(make_shared<Sphere>(Point3(-1, 0, -1), 0.5, make_shared<Metal>(Color(0.8, 0.8, 0.8))));
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom

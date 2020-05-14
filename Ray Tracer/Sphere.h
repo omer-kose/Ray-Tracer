@@ -42,6 +42,7 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 		{
 			rec.t = t;
 			rec.p = ray.at(t);
+			/*Normals are normalized in here*/
 			Vec3 outward_normal = (rec.p - center) / radius;/*Dividing by radius normalizes normal vector 
 												    since it is from center to surface, its length is exactly radius.*/
 			

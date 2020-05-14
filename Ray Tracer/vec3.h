@@ -128,7 +128,7 @@ Vec3 random_unit_vector()/*Returns a random point on the unit sphere*/
 	auto r = sqrt(1 - z * z );
 	return Vec3(r*cos(angle), r*sin(angle), z);
 }
-Vec3 random_in_hemisphere(const Vec3 &normal)
+Vec3 random_in_hemisphere(const Vec3 &normal)/*You may use it if you are not going to offset with normal*/
 {
 	Vec3 in_unit_sphere = random_unit_vector();
 	if (dot(normal, in_unit_sphere) > 0.0) /*In the hemisphere*/
@@ -140,6 +140,13 @@ Vec3 random_in_hemisphere(const Vec3 &normal)
 		return -in_unit_sphere;
 	}
 }
+Vec3 reflect(const Vec3 &v, const Vec3 &n)
+{
+	/*In our desing V will be normalized by callee*/
+	/*Since v points in the dot(v,n) will be negative so we will negate it again to get the dir of normal*/
+	return v - 2 * dot(v, n) * n;
+}
+
 
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
