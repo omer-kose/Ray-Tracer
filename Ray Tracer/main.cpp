@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Lambertian.h"
 #include "Metal.h"
+#include "Dielectric.h"
 
 
 
@@ -62,12 +63,14 @@ int main()
 	Camera cam;
 
 	Hittable_List world;
-	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5,make_shared<Lambertian>(Color(0.7,0.3,0.3))));
+	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5,make_shared<Lambertian>(Color(0.1, 0.2, 0.5))));
 	world.add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100, make_shared<Lambertian>(Color(0.8, 0.8, 0.0))));
 
 
-	world.add(make_shared<Sphere>(Point3(1, 0, -1), 0.5, make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.3)));
-	world.add(make_shared<Sphere>(Point3(-1, 0, -1), 0.5, make_shared<Metal>(Color(0.8, 0.8, 0.8),1.0)));
+	
+	world.add(make_shared<Sphere>(Point3(1, 0, -1), 0.5, make_shared<Metal>(Color(.8, .6, .2), 0.0)));
+	world.add(make_shared<Sphere>(Point3(-1, 0,-1), 0.5, make_shared<Dielectric>(1.5)));
+	
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom
