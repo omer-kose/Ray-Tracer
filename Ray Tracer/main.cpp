@@ -69,8 +69,10 @@ int main()
 
 	
 	world.add(make_shared<Sphere>(Point3(1, 0, -1), 0.5, make_shared<Metal>(Color(.8, .6, .2), 0.0)));
+	/*When you combine these you will get a bubble*/
 	world.add(make_shared<Sphere>(Point3(-1, 0,-1), 0.5, make_shared<Dielectric>(1.5)));
-	
+	/*When radius is negated normals are reversed*/
+	world.add(make_shared<Sphere>(Point3(-1, 0, -1), -0.45, make_shared<Dielectric>(1.5)));
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom

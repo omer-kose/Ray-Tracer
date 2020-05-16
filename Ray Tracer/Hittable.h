@@ -27,6 +27,7 @@ struct hit_record
 		/*We defined outward_normals to look always outside of the surface*/
 		/*So, with this function we correct them*/
 		front_face = dot(ray.getDir(), outward_normal) < 0;
+		/*Reverse backface normals to correctly calculate light calculations*/
 		normal = front_face ? outward_normal : -outward_normal;
 	}
 
