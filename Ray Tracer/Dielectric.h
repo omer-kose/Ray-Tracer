@@ -23,9 +23,23 @@ public:
 			etai_over_etat = ref_idx;/*mat_ref_idx / env*/
 		}
 		Vec3 unit_direction = unit_vector(ray_in.getDir());/*We need incoming dir to refract*/
-		Vec3 refracted = refract(unit_direction, rec.normal, etai_over_etat);
-		scattered = Ray(rec.p, refracted);
-		return true;
+		double cosI = dot(-unit_direction, rec.normal);
+		double sinI = sqrt(1.0 - cosI*cosI);
+		if (etai_over_etat * sinI > 1.0)
+		{
+			//Must reflect 
+			Vec3 reflected = reflect(unit_direction, rec.normal);
+			scattered = Ray(rec.p, reflected);
+			return true;
+		}
+		else
+		{
+			//Can refract
+			Vec3 refracted = refract(unit_direction, rec.normal, etai_over_etat);
+			scattered = Ray(rec.p, refracted);
+			return true;
+		}
+	
 	}
 public:
 	double ref_idx;/*Refractive Index of our material*/

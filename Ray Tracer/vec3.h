@@ -148,10 +148,10 @@ Vec3 reflect(const Vec3 &v, const Vec3 &n)
 }
 Vec3 refract(const Vec3 &incident, const Vec3 &normal, double etai_over_etat)
 {
-	const double cosI = -1.0 * dot(incident, normal);
+	const double cosI = -1.0 * dot(incident, normal);/*Cosine of angle between incident ray and normal*/
 	Vec3 transmitted_paralel = etai_over_etat * (incident + cosI * normal);
-	const double sinT2 = etai_over_etat * etai_over_etat * (1 - cosI * cosI);
-	const double cosT = sqrt(1.0 - sinT2);
+	const double sinT2 = etai_over_etat * etai_over_etat * (1 - cosI * cosI);/*Square of sine of angle between transmitted and normal*/
+	const double cosT = sqrt(1.0 - sinT2);/*Cosine of angle between transmitted ray and normal*/
 	Vec3 transmitted_orthogonal = -1.0 * cosT * normal;
 	return transmitted_paralel + transmitted_orthogonal;
 
