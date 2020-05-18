@@ -60,7 +60,7 @@ int main()
 	Point3 lower_left_corner(-2.0,-1.0,-1.0);/*Image plane has an offset of 1 along -z dir*/
 	//IMAGE PLANE DEF ENDS
 	/*Camera*/
-	Camera cam;
+	Camera cam(90, aspect_ratio);
 
 	Hittable_List world;
 	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5,make_shared<Lambertian>(Color(0.1, 0.2, 0.5))));
