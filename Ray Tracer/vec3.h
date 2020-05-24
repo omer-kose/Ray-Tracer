@@ -118,7 +118,7 @@ inline Vec3 unit_vector(Vec3 v)
 {
 	return v / v.length();
 }
-Vec3 random_in_unit_sphere()/*Returns a random point on the unit sphere*/
+Vec3 random_on_unit_sphere()/*Returns a random point on the unit sphere*/
 {
 	auto angle = random_double(0.0, 2 * pi);
 	/*Z coordinate of the point*/
@@ -130,7 +130,7 @@ Vec3 random_in_unit_sphere()/*Returns a random point on the unit sphere*/
 }
 Vec3 random_in_hemisphere(const Vec3 &normal)/*You may use it if you are not going to offset with normal*/
 {
-	Vec3 in_unit_sphere = random_in_unit_sphere();
+	Vec3 in_unit_sphere = random_on_unit_sphere();
 	if (dot(normal, in_unit_sphere) > 0.0) /*In the hemisphere*/
 	{
 		return in_unit_sphere;
@@ -138,6 +138,15 @@ Vec3 random_in_hemisphere(const Vec3 &normal)/*You may use it if you are not goi
 	else
 	{
 		return -in_unit_sphere;
+	}
+}
+Vec3 random_in_unit_disk()
+{
+	while (true)
+	{
+		auto p = Vec3(random_double(-1.0,1.0),random_double(-1.0,1.0),0.0);
+		if (p.length_squared() >= 1.0) continue;
+		return p;
 	}
 }
 Vec3 reflect(const Vec3 &v, const Vec3 &n)

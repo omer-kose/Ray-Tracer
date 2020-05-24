@@ -59,8 +59,14 @@ int main()
 	/*We are casting our rays relative to lower_left_corner*/
 	Point3 lower_left_corner(-2.0,-1.0,-1.0);/*Image plane has an offset of 1 along -z dir*/
 	//IMAGE PLANE DEF ENDS
+	
 	/*Camera*/
-	Camera cam(Point3(-2.0,2.0,1.0),Point3(0.0,0.0,-1.0),Vec3(0.0,1.0,0.0),20, aspect_ratio);
+	Point3 lookFrom(3.0, 3.0, 2.0);
+	Point3 lookAt(0.0, 0.0, -1.0);
+	Vec3 vUp(0.0, 1.0, 0.0);
+	auto dist_to_focus = (lookFrom - lookAt).length();
+	auto aperture = 2.0;
+	Camera cam(lookFrom, lookAt, vUp, 20, aspect_ratio, aperture, dist_to_focus);
 
 	Hittable_List world;
 	world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5,make_shared<Lambertian>(Color(0.1, 0.2, 0.5))));

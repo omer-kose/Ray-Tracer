@@ -11,7 +11,7 @@ public:
 	virtual bool scatter(const Ray &ray_in, const hit_record &rec, Color &attenuation, Ray &scattered) const
 	{
 		Vec3 reflectedDir = reflect(unit_vector(ray_in.getDir()), rec.normal);
-		scattered = Ray(rec.p, reflectedDir + fuzziness * random_in_unit_sphere());
+		scattered = Ray(rec.p, reflectedDir + fuzziness * random_on_unit_sphere());
 		attenuation = albedo;
 		return (dot(scattered.getDir(),rec.normal) > 0);
 
