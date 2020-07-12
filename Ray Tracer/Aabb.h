@@ -14,11 +14,14 @@ public:
 	{
 		for (int i = 0; i < 3; i++) /*Traversing all axes*/
 		{
-			auto t0 = fmin((_min[i]-r.getOrigin()[i])/r.getDir()[i],
-							(_max[i]-r.getOrigin()[i])/r.getDir()[i]);
-
-			auto t1 = fmax((_min[i] - r.getOrigin()[i]) / r.getDir()[i],
-						(_max[i] - r.getOrigin()[i]) / r.getDir()[i]);
+			auto invDir = 1.0f / r.getDir()[i];
+			auto t0 = (_min[i] - r.getOrigin[i]) * invDir;
+			auto t1 = (_max[i] - r.getOrigin[i]) * invDir;
+			
+			if (invDir < 0.0f)
+			{
+				std::swap(t0, t1);
+			}
 
 			tmin = fmax(t0,tmin);
 			tmax = fmin(t1, tmax);
