@@ -16,6 +16,7 @@ public:
 		mat_ptr(m)
 	{};
 	virtual bool hit(const Ray &ray, double t_min, double t_max, hit_record &rec) const;
+	virtual bool bounding_box(double t0, double t1, Aabb &output_box) const;
 public:
 	Point3 center;
 	double radius;
@@ -63,6 +64,15 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 	}
 
 	return false;
+}
+
+bool Sphere::bounding_box(double t0, double t1, Aabb &output_box) const
+{
+	output_box = Aabb(
+					center - Vec3(radius,radius,radius),
+					center + Vec3(radius,radius,radius));
+	
+	return true;
 }
 
 

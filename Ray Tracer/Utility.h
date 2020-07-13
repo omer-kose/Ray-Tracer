@@ -45,6 +45,7 @@ inline double clamp(double x,double min, double max)
 #include "Ray.h"
 #include "vec3.h"
 #include "Color.h"
+#include "Aabb.h"
 
 
 #endif
