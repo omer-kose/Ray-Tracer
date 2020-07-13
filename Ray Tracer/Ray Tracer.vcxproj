@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aabb.h" />
+    <ClInclude Include="Bvh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Dielectric.h" />
