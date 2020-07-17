@@ -8,6 +8,7 @@
 #include "Metal.h"
 #include "Dielectric.h"
 #include "Bvh.h"
+#include "Texture.h"
 
 
 
@@ -94,6 +95,14 @@ Hittable_List two_perlin_spheres()
 
 	return objects;
 }
+Hittable_List earth()
+{
+	auto earth_texture = make_shared<Image_Texture>("earthmap.jpg");
+	auto earth_surface = make_shared<Lambertian>(earth_texture);
+	auto globe = make_shared<Sphere>(Point3(0, 0, 0), 2, earth_surface);
+
+	return Hittable_List(globe);
+}
 Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is the recursive depth*/
 {
 	hit_record rec;
@@ -151,7 +160,7 @@ int main()
 	auto aperture = 0.0;
 	Camera cam(lookFrom, lookAt, vUp, 20, aspect_ratio, aperture, dist_to_focus);
 
-	Hittable_List world = two_perlin_spheres();
+	Hittable_List world = earth();
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom

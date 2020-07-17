@@ -123,6 +123,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Dielectric.h" />
+    <ClInclude Include="External\stb_image.h" />
+    <ClInclude Include="External\stb_image_write.h" />
     <ClInclude Include="Hittable.h" />
     <ClInclude Include="Hittable_List.h" />
     <ClInclude Include="Lambertian.h" />
@@ -130,6 +132,7 @@
     <ClInclude Include="Metal.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="rtw_stb_image.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Utility.h" />
