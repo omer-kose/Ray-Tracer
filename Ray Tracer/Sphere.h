@@ -49,6 +49,7 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 			
 			rec.set_face_normal(ray, outward_normal);
 			rec.mat_ptr = mat_ptr;
+			get_sphere_uv((rec.p - center) / radius, rec.u, rec.v);
 			return true;
 		}
 		t = (-half_b + root) / a;
@@ -59,6 +60,7 @@ bool Sphere::hit(const Ray &ray, double t_min, double t_max, hit_record &rec) co
 			Vec3 outward_normal = (rec.p - center) / radius;
 			rec.set_face_normal(ray, outward_normal);
 			rec.mat_ptr = mat_ptr;
+			get_sphere_uv((rec.p - center) / radius, rec.u, rec.v);
 			return true;
 		}
 	}
@@ -74,9 +76,6 @@ bool Sphere::bounding_box(double t0, double t1, Aabb &output_box) const
 	
 	return true;
 }
-
-
-
 
 
 #endif

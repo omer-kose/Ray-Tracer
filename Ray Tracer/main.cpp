@@ -7,6 +7,7 @@
 #include "Lambertian.h"
 #include "Metal.h"
 #include "Dielectric.h"
+#include "Bvh.h"
 
 
 
@@ -31,7 +32,7 @@ Hittable_List random_scene()
 				if (choose_mat < 0.8)
 				{
 					//Diffuse
-					auto albedo = Color::random() * Color::random();
+					auto albedo = make_shared<Solid_Color>(Color::random() * Color::random());
 					sphere_material = make_shared<Lambertian>(albedo);
 					world.add(make_shared<Sphere>(center, 0.2, sphere_material));
 
@@ -61,13 +62,37 @@ Hittable_List random_scene()
 	auto material1 = make_shared<Dielectric>(1.5);
 	world.add(make_shared<Sphere>(Point3(0.0, 1.0, 0.0), 1.0, material1));
 
-	auto material2 = make_shared<Lambertian>(Color(0.4,0.2,0.1));
+	auto material2 = make_shared<Lambertian>(make_shared<Solid_Color>(0.5,0.5,0.5));
 	world.add(make_shared<Sphere>(Point3(-4.0, 1.0, 0.0), 1.0, material2));
 
 	auto material3 = make_shared<Metal>(Color(0.7,0.6,0.5),0.0);
 	world.add(make_shared<Sphere>(Point3(4.0, 1.0, 0.0), 1.0, material3));
 
 	return world;
+}
+Hittable_List two_spheres()
+{
+	Hittable_List objects;
+	
+	auto checker = make_shared<Checker_Texture>(
+		make_shared<Solid_Color>(0.2, 0.3, 0.2),
+		make_shared<Solid_Color>(0.9, 0.9, 0.9));
+
+	objects.add(make_shared<Sphere>(Point3(0, -10, 0), 10, make_shared<Lambertian>(checker)));
+	objects.add(make_shared<Sphere>(Point3(0, 10, 0), 10, make_shared<Lambertian>(checker)));
+
+
+	return objects;
+}
+Hittable_List two_perlin_spheres()
+{
+	Hittable_List objects;
+
+	auto pertext = make_shared<Noise_Texture>(12.0);
+	objects.add(make_shared<Sphere>(Point3(0, -1000, 0), 1000, make_shared<Lambertian>(pertext)));
+	objects.add(make_shared<Sphere>(Point3(0, 2, 0), 2, make_shared<Lambertian>(pertext)));
+
+	return objects;
 }
 Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is the recursive depth*/
 {
@@ -123,10 +148,10 @@ int main()
 	Point3 lookAt(0.0, 0.0, 0.0);
 	Vec3 vUp(0.0, 1.0, 0.0);
 	auto dist_to_focus = 10.0;
-	auto aperture = 0.1;
+	auto aperture = 0.0;
 	Camera cam(lookFrom, lookAt, vUp, 20, aspect_ratio, aperture, dist_to_focus);
 
-	Hittable_List world = random_scene();
+	Hittable_List world = two_perlin_spheres();
 
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom

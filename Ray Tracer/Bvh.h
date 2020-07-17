@@ -10,7 +10,7 @@
 class Bvh_Node : public Hittable
 {
 public:
-	Bvh_Node();
+	Bvh_Node() {};
 	
 	Bvh_Node(Hittable_List &list) : Bvh_Node(list.objects, 0 , list.objects.size()) {}
 
@@ -49,6 +49,33 @@ bool Bvh_Node::hit(const Ray &r, double tmin, double tmax, hit_record &rec) cons
 	return left_hit || right_hit;
 
 }
+
+
+inline bool box_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b, int axis)
+{
+	Aabb box_a;
+	Aabb box_b;
+
+	if (!a->bounding_box(0, 0, box_a) || !b->bounding_box(0, 0, box_b))
+		std::cerr << "No bounding box in bvh_node constructor.\n";
+
+
+	return box_a.min().e[axis] < box_b.min().e[axis];
+}
+
+bool box_x_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
+{
+	return box_compare(a, b, 0);
+}
+bool box_y_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
+{
+	return box_compare(a, b, 1);
+}
+bool box_z_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
+{
+	return box_compare(a, b, 2);
+}
+
 
 Bvh_Node::Bvh_Node(
 	std::vector<std::shared_ptr<Hittable>> &objects,
@@ -100,27 +127,3 @@ Bvh_Node::Bvh_Node(
 
 }
 
-inline bool box_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b, int axis)
-{
-	Aabb box_a;
-	Aabb box_b;
-
-	if (!a->bounding_box(0, 0, box_a) || !b->bounding_box(0, 0, box_b))
-		std::cerr << "No bounding box in bvh_node constructor.\n";
-
-
-	return box_a.min().e[axis] < box_b.min().e[axis];
-}
-
-bool box_x_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
-{
-	return box_compare(a, b, 0);
-}
-bool box_y_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
-{
-	return box_compare(a, b, 1);
-}
-bool box_z_compare(const shared_ptr<Hittable> &a, const shared_ptr<Hittable> &b)
-{
-	return box_compare(a, b, 2);
-}

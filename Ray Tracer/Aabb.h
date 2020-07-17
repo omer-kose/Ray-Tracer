@@ -15,8 +15,8 @@ public:
 		for (int i = 0; i < 3; i++) /*Traversing all axes*/
 		{
 			auto invDir = 1.0f / r.getDir()[i];
-			auto t0 = (_min[i] - r.getOrigin[i]) * invDir;
-			auto t1 = (_max[i] - r.getOrigin[i]) * invDir;
+			auto t0 = (_min[i] - r.getOrigin()[i]) * invDir;
+			auto t1 = (_max[i] - r.getOrigin()[i]) * invDir;
 			
 			if (invDir < 0.0f)
 			{

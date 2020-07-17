@@ -18,6 +18,9 @@ struct hit_record
 	Vec3 normal;
 	shared_ptr<Material> mat_ptr;
 	double t;
+	/*Texture Coordinates*/
+	double u;
+	double v;
 	bool front_face;
 
 	inline void set_face_normal(const Ray &ray, const Vec3 &outward_normal)
@@ -39,6 +42,17 @@ public:
 	virtual bool hit(const Ray &ray, double t_min, double t_max, hit_record &rec) const = 0;/*Pure virtual function*/
 	virtual bool bounding_box(double t0, double t1, Aabb &output_box) const = 0;
 };
+
+void get_sphere_uv(const Vec3 &p, double &u, double &v) /*assuming a unit sphere*/
+{
+	auto phi = acos(p.y());
+	auto theta = atan2(p.x(), p.z());
+	if (theta >= 0) theta /= 2 * pi;
+	else theta = (theta / (2 * pi)) + 1;
+	u = theta;
+	v = phi / pi;
+}
+
 
 
 #endif
