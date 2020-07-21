@@ -23,7 +23,7 @@ public:
 		Solid_Color(Color(red,green,blue))
 	{}
 
-	virtual Color value(double u, double v, const Point3 &p) const
+	virtual Color value(double u, double v, const Point3 &p) const override
 	{
 		return color_value;
 	}
@@ -107,7 +107,7 @@ public:
 			return Color(0, 1, 1);
 		}
 
-		// Clamp input texture coordinates to [0,1] x [1,0]
+		// Clamp input texture coordinates to [0,1] x [0,1]
 		u = clamp(u, 0.0, 1.0);
 		v = clamp(v, 0.0, 1.0); 
 

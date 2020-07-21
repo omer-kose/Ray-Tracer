@@ -119,10 +119,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aabb.h" />
+    <ClInclude Include="Aarect.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Bvh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Dielectric.h" />
+    <ClInclude Include="Diffuse_Light.h" />
     <ClInclude Include="External\stb_image.h" />
     <ClInclude Include="External\stb_image_write.h" />
     <ClInclude Include="Hittable.h" />

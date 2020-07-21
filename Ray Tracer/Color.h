@@ -25,7 +25,7 @@ void write_color(std::ostream &out, Color pixel_color, int samples_per_pixel)
 	//Write the translated [0,255] value of each color component
 	out << static_cast<int>(256.0 * clamp(r, 0.0, 1.0)) << ' '
 		<< static_cast<int>(256.0 * clamp(g,0.0,1.0)) << ' '
-		<< static_cast<int>(255.0 * clamp(b,0.0,1.0)) << '\n';
+		<< static_cast<int>(256.0 * clamp(b,0.0,1.0)) << '\n';
 }
 
 #endif 

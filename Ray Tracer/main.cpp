@@ -9,7 +9,9 @@
 #include "Dielectric.h"
 #include "Bvh.h"
 #include "Texture.h"
-
+#include "Diffuse_Light.h"
+#include "Aarect.h"
+#include "Box.h"
 
 
 Hittable_List random_scene()
@@ -103,7 +105,41 @@ Hittable_List earth()
 
 	return Hittable_List(globe);
 }
-Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is the recursive depth*/
+Hittable_List simple_light()
+{
+	Hittable_List objects;
+
+	auto pertext = make_shared<Noise_Texture>(4);
+	objects.add(make_shared<Sphere>(Point3(0, -1000, 0), 1000, make_shared<Lambertian>(pertext)));
+	objects.add(make_shared<Sphere>(Point3(0, 2, 0), 2, make_shared<Lambertian>(pertext)));
+
+	auto diffuse_light = make_shared<Diffuse_Light>(make_shared<Solid_Color>(4, 4, 4));
+	objects.add(make_shared<Sphere>(Point3(0, 7, 0), 2, diffuse_light));
+	objects.add(make_shared<XY_Rect>(3, 5, 1, 3, -2, diffuse_light));
+
+	return objects;
+}
+Hittable_List cornell_box() {
+	Hittable_List objects;
+
+	auto red = make_shared<Lambertian>(Color(.65, .05, .05));
+	auto white = make_shared<Lambertian>(Color(.73, .73, .73));
+	auto green = make_shared<Lambertian>(Color(.12, .45, .15));
+	auto light = make_shared<Diffuse_Light>(Color(15, 15, 15));
+
+	objects.add(make_shared<YZ_Rect>(0, 555, 0, 555, 555, green));
+	objects.add(make_shared<YZ_Rect>(0, 555, 0, 555, 0, red));
+	objects.add(make_shared<XZ_Rect>(213, 343, 227, 332, 554, light));
+	objects.add(make_shared<XZ_Rect>(0, 555, 0, 555, 0, white));
+	objects.add(make_shared<XZ_Rect>(0, 555, 0, 555, 555, white));
+	objects.add(make_shared<XY_Rect>(0, 555, 0, 555, 555, white));
+
+	objects.add(make_shared<Box>(Point3(130, 0, 65), Point3(295, 165, 230), white));
+	objects.add(make_shared<Box>(Point3(265, 0, 295), Point3(430, 330, 460), white));
+
+	return objects;
+}
+Color ray_color(const Ray &ray, const Color &background,const Hittable_List &world, int depth)/*depth is the recursive depth*/
 {
 	hit_record rec;
 	/*If ray exceeds the bounce limit, no more light is gathered (no contribution)*/
@@ -117,51 +153,95 @@ Color ray_color(const Ray &ray, const Hittable_List &world, int depth)/*depth is
 	/*Computer might not distinguish whether ray hit to the object or not since at intersection point
 	t is very small. Therefore, it might interpret it as a not hit point so, we compensate that by
 	adding using an epsilon 0.001*/
-	if (world.hit(ray, 0.001, infinity, rec))
+	if (!world.hit(ray, 0.001, infinity, rec))
 	{
-		Ray scattered;
-		Color attenuation;
-		if (rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
-		{
-			return attenuation * ray_color(scattered, world, depth-1);
-		}
-		return Color(0.0, 0.0, 0.0);
+		return background;
 	}
-	Vec3 unit_direction = unit_vector(ray.getDir());
-	/*Y goes from -1 to 1 approximately(on image plane we do our calculation wrt image plane)*/
-	/*Background*/
-	auto t = 0.5 * (unit_direction.y() + 1.0); /*T is an interpolator so we map y between 0 and 1*/
-	return (1 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);/*Linear interpolation*/
+
+	Ray scattered;
+	Color attenuation;
+	Color emmited = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+
+	if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+	{
+		return emmited;
+	}
+
+	return emmited + attenuation * ray_color(scattered, background, world, depth - 1);
 }
 
 int main()
 {
-	constexpr auto aspect_ratio = 16.0 / 9.0;
-	constexpr int image_width = 384;
+	const auto aspect_ratio = 1.0 / 1.0;
+	const int image_width = 600;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
-	constexpr int samples_per_pixel = 100;
-	constexpr int max_depth = 50;
+
+	Hittable_List world;
+
+	int samples_per_pixel = 100;
+	int max_depth = 50;
+
+	Point3 lookfrom;
+	Point3 lookat;
+	Vec3 vup(0, 1, 0);
+	auto vfov = 40.0;
+	auto aperture = 0.0;
+	auto dist_to_focus = 10.0;
+	Color background(0, 0, 0);
+
+	switch (6) {
+	case 1:
+		world = random_scene();
+		lookfrom = Point3(13, 2, 3);
+		lookat = Point3(0, 0, 0);
+		vfov = 20.0;
+		background = Color(0.70, 0.80, 1.00);
+		break;
+
+	case 2:
+		world = two_spheres();
+		lookfrom = Point3(13, 2, 3);
+		lookat = Point3(0, 0, 0);
+		vfov = 20.0;
+		background = Color(0.70, 0.80, 1.00);
+		break;
+
+	case 3:
+		world = two_perlin_spheres();
+		lookfrom = Point3(13, 2, 3);
+		lookat = Point3(0, 0, 0);
+		vfov = 20.0;
+		background = Color(0.70, 0.80, 1.00);
+		break;
+
+	case 4:
+		world = earth();
+		lookfrom = Point3(0, 0, 12);
+		lookat = Point3(0, 0, 0);
+		vfov = 20.0;
+		background = Color(0.70, 0.80, 1.00);
+		break;
+
+	case 5:
+		world = simple_light();
+		lookfrom = Point3(26, 3, 6);
+		lookat = Point3(0, 2, 0);
+		vfov = 20.0;
+		break;
+
+	default:
+	case 6:
+		world = cornell_box();
+		lookfrom = Point3(278, 278, -800);
+		lookat = Point3(278, 278, 0);
+		vfov = 40.0;
+		break;
+
+	}
 
 	std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-	/*Using Right Handed Coordinate System*/
-	Point3 rayOrigin(0.0, 0.0, 0.0);
-	/*Dimensions of image plane (Alligned with aspect_ratio)*/
-	Vec3 horizontal(4.0, 0.0, 0.0);
-	Vec3 vertical(0.0, 2.0, 0.0);
-	/*We are casting our rays relative to lower_left_corner*/
-	Point3 lower_left_corner(-2.0,-1.0,-1.0);/*Image plane has an offset of 1 along -z dir*/
-	//IMAGE PLANE DEF ENDS
-	
-	/*Camera*/
-	Point3 lookFrom(13.0, 2.0, 3.0);
-	Point3 lookAt(0.0, 0.0, 0.0);
-	Vec3 vUp(0.0, 1.0, 0.0);
-	auto dist_to_focus = 10.0;
-	auto aperture = 0.0;
-	Camera cam(lookFrom, lookAt, vUp, 20, aspect_ratio, aperture, dist_to_focus);
 
-	Hittable_List world = earth();
-
+	Camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus);
 	
 	for (int j = image_height - 1; j >= 0; j--)//From top to bottom
 	{
@@ -176,7 +256,7 @@ int main()
 				auto u = (i + random_double()) / (image_width - 1);/*Ranges from 0 to 1 along x axis (left to right)*/
 				auto v = (j + random_double()) / (image_height - 1);/*Ranges from 0 to 1 along y axis (Top to bottom)*/
 				Ray r = cam.getRay(u,v);
-				pixel_color += ray_color(r, world, max_depth);
+				pixel_color += ray_color(r, background, world, max_depth);
 			}
 			write_color(std::cout, pixel_color,samples_per_pixel);
 		}

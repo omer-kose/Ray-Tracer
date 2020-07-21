@@ -80,5 +80,14 @@
     <ClInclude Include="External\stb_image_write.h">
       <Filter>Header Files\External</Filter>
     </ClInclude>
+    <ClInclude Include="Diffuse_Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Aarect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
