@@ -124,12 +124,14 @@
     <ClInclude Include="Bvh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Constant_Medium.h" />
     <ClInclude Include="Dielectric.h" />
     <ClInclude Include="Diffuse_Light.h" />
     <ClInclude Include="External\stb_image.h" />
     <ClInclude Include="External\stb_image_write.h" />
     <ClInclude Include="Hittable.h" />
     <ClInclude Include="Hittable_List.h" />
+    <ClInclude Include="Isotropic.h" />
     <ClInclude Include="Lambertian.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Metal.h" />
@@ -138,6 +140,7 @@
     <ClInclude Include="rtw_stb_image.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transformation.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="vec3.h" />
   </ItemGroup>
