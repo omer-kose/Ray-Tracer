@@ -64,8 +64,8 @@ public:
 };
 
 /*Utility Functions*/
-/*When an operator is defined inside, left operand is current instance. Therefore, to be able to define
-in this way we have to define them outside of the class(using any vector not only current instance we need to define it outside of class)*/
+/*When an operator is defined inside, one operand is current instance. Therefore, to be able to define
+in this way we have to define them outside of the class(to be able to use any vector not only current instance, we need to define it outside of class)*/
 
 inline std::ostream& operator<<(std::ostream &out, const Vec3 &v)
 {
@@ -127,6 +127,14 @@ Vec3 random_on_unit_sphere()/*Returns a random point on the unit sphere*/
 	/*(r*cosa)^2 + (r*sina)^2 + z^2 = 1 then r is:*/
 	auto r = sqrt(1 - z * z );
 	return Vec3(r*cos(angle), r*sin(angle), z);
+}
+Vec3 random_in_unit_sphere() 
+{
+	while (true) {
+		auto p = Vec3::random(-1, 1);
+		if (p.length_squared() >= 1) continue;
+		return p;
+	}
 }
 Vec3 random_in_hemisphere(const Vec3 &normal)/*You may use it if you are not going to offset with normal*/
 {

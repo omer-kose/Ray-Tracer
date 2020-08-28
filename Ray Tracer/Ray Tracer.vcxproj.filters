@@ -16,6 +16,12 @@
     <Filter Include="Header Files\External">
       <UniqueIdentifier>{3e32c657-e573-482d-92b8-4d8a9bc0341b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{070d8ab6-3203-4d54-ab90-6a8a2784d924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables">
+      <UniqueIdentifier>{05a8747d-4ec7-4733-83fb-3b336914bde3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,43 +38,16 @@
     <ClInclude Include="Ray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hittable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hittable_List.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lambertian.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Metal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dielectric.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Aabb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bvh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Perlin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rtw_stb_image.h">
@@ -80,23 +59,50 @@
     <ClInclude Include="External\stb_image_write.h">
       <Filter>Header Files\External</Filter>
     </ClInclude>
-    <ClInclude Include="Diffuse_Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Aarect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Transformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Constant_Medium.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Dielectric.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Diffuse_Light.h">
+      <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Isotropic.h">
-      <Filter>Header Files</Filter>
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Lambertian.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Metal.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Perlin.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant_Medium.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Hittable.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Hittable_List.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Aarect.h">
+      <Filter>Hittables</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
