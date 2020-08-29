@@ -41,6 +41,15 @@ class Hittable
 public:
 	virtual bool hit(const Ray &ray, double t_min, double t_max, hit_record &rec) const = 0;/*Pure virtual function*/
 	virtual bool bounding_box(double t0, double t1, Aabb &output_box) const = 0;
+	virtual double pdf_value(const Point3& o, const Vec3& v) const
+	{
+		return 0.0;
+	}
+
+	virtual Vec3 random(const Vec3& o) const 
+	{
+		return Vec3(1, 0, 0);
+	}
 };
 
 void get_sphere_uv(const Vec3 &p, double &u, double &v) /*assuming a unit sphere*/
@@ -52,6 +61,28 @@ void get_sphere_uv(const Vec3 &p, double &u, double &v) /*assuming a unit sphere
 	u = theta;
 	v = phi / pi;
 }
+
+class Flip_Face : public Hittable
+{
+public:
+	Flip_Face(shared_ptr<Hittable> p) : ptr(p) {}
+	virtual bool hit(const Ray &ray, double t_min, double t_max, hit_record &rec) const override
+	{
+		if (!ptr->hit(ray, t_min, t_max,rec))
+		{
+			return false;
+		}
+
+		rec.front_face = !rec.front_face;
+		return true;
+	}
+	virtual bool bounding_box(double t0, double t1, Aabb &output_box) const override
+	{
+		return ptr->bounding_box(t0, t1, output_box);
+	}
+private:
+	shared_ptr<Hittable> ptr;
+};
 
 
 

@@ -107,5 +107,8 @@
     <ClInclude Include="onb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pdf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

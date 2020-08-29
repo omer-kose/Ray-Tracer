@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Material.h"
 #include "onb.h"
+#include "Pdf.h"
 
 class Lambertian : public Material
 {

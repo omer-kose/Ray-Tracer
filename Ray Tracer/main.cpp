@@ -14,6 +14,7 @@
 #include "Box.h"
 #include "Transformation.h"
 #include "Constant_Medium.h"
+#include "Pdf.h"
 
 Hittable_List random_scene()
 {
@@ -131,10 +132,12 @@ Hittable_List cornell_box()
 
 	world.add(make_shared<YZ_Rect>(0, 555, 0, 555, 555, green));
 	world.add(make_shared<YZ_Rect>(0, 555, 0, 555, 0, red));
-	world.add(make_shared<XZ_Rect>(213, 343, 227, 332, 554, light));
 	world.add(make_shared<XZ_Rect>(0, 555, 0, 555, 555, white));
 	world.add(make_shared<XZ_Rect>(0, 555, 0, 555, 0, white));
 	world.add(make_shared<XY_Rect>(0, 555, 0, 555, 555, white));
+	/*Light*/
+	world.add(make_shared<Flip_Face>(make_shared<XZ_Rect>(213, 343, 227, 332, 554, light)));
+
 
 	shared_ptr<Hittable> box1 = make_shared<Box>(Point3(0, 0, 0), Point3(165, 330, 165), white);
 	box1 = make_shared<Rotate_Y>(box1, 15);
@@ -232,21 +235,26 @@ Color ray_color(const Ray &ray, const Color &background,const Hittable_List &wor
 
 	Ray scattered;
 	Color attenuation;
-	Color emmited = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+	Color emmited = rec.mat_ptr->emitted(ray,rec,rec.u, rec.v, rec.p);
 
 
 	/*Will be filled by material*/
-	double pdf;
+	double pdf_val;
 	Color albedo;
 	
 	
-	if (!rec.mat_ptr->scatter(ray, rec, albedo, scattered, pdf))
+	if (!rec.mat_ptr->scatter(ray, rec, albedo, scattered, pdf_val))
 	{
 		return emmited;
 	}
 
+	Cosine_Pdf p(rec.normal);
+	scattered = Ray(rec.p, p.generate());
+	pdf_val = p.value(scattered.getDir());
+
+	
 	return emmited + albedo * rec.mat_ptr->scattering_pdf(ray, rec, scattered) *
-		ray_color(scattered, background, world, depth - 1) / pdf;
+		ray_color(scattered, background, world, depth - 1) / pdf_val;
 }
 
 int main()

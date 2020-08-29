@@ -136,6 +136,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Metal.h" />
     <ClInclude Include="onb.h" />
+    <ClInclude Include="Pdf.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="rtw_stb_image.h" />

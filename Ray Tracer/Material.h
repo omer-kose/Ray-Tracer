@@ -19,10 +19,10 @@ public:
 		return 0;
 	}
 
-	virtual Color emitted(double u, double v, const Point3 &p) const
+	virtual Color emitted(const Ray &r_in, const hit_record &rec,double u, double v, const Point3 &p) const
 	{
 		return Color(0.0, 0.0, 0.0);
-	}
+	}	
 
 
 };
