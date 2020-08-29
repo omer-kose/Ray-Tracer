@@ -135,6 +135,7 @@
     <ClInclude Include="Lambertian.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Metal.h" />
+    <ClInclude Include="onb.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="rtw_stb_image.h" />

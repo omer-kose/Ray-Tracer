@@ -234,12 +234,19 @@ Color ray_color(const Ray &ray, const Color &background,const Hittable_List &wor
 	Color attenuation;
 	Color emmited = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
 
-	if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+
+	/*Will be filled by material*/
+	double pdf;
+	Color albedo;
+	
+	
+	if (!rec.mat_ptr->scatter(ray, rec, albedo, scattered, pdf))
 	{
 		return emmited;
 	}
 
-	return emmited + attenuation * ray_color(scattered, background, world, depth - 1);
+	return emmited + albedo * rec.mat_ptr->scattering_pdf(ray, rec, scattered) *
+		ray_color(scattered, background, world, depth - 1) / pdf;
 }
 
 int main()

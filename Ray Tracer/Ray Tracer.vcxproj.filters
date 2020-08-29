@@ -104,5 +104,8 @@
     <ClInclude Include="Aarect.h">
       <Filter>Hittables</Filter>
     </ClInclude>
+    <ClInclude Include="onb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

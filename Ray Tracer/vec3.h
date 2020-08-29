@@ -174,6 +174,19 @@ Vec3 refract(const Vec3 &incident, const Vec3 &normal, double etai_over_etat)
 
 }
 
+inline Vec3 random_cosine_direction()
+{
+	auto r1 = random_double();
+	auto r2 = random_double();
+	auto z = sqrt(1 - r2);
+
+	auto phi = 2 * pi * r1;
+	auto x = cos(phi) * sqrt(r2);
+	auto y = sin(phi) * sqrt(r2);
+
+	return Vec3(x, y, z);
+}
+
 
 //Type aliases for vec3 since we are going to use it for both colors and points.
 //Note that these are just aliases, We use them only clarify intent and use
