@@ -214,7 +214,7 @@ Hittable_List final_scene()
 
 	return objects;
 }
-Color ray_color(const Ray &ray, const Color &background,const Hittable_List &world, int depth)/*depth is the recursive depth*/
+Color ray_color(const Ray &ray, const Color &background,const Hittable_List &world, shared_ptr<Hittable> light,int depth)/*depth is the recursive depth*/
 {
 	hit_record rec;
 	/*If ray exceeds the bounce limit, no more light is gathered (no contribution)*/
@@ -247,14 +247,19 @@ Color ray_color(const Ray &ray, const Color &background,const Hittable_List &wor
 	{
 		return emmited;
 	}
+	
+	shared_ptr<Hittable> light_shape =
+		make_shared<XZ_Rect>(213, 343, 227, 332, 554, make_shared<Material>());
+	auto p0 = make_shared<Hittable_Pdf>(light_shape, rec.p);
+	auto p1 = make_shared<Cosine_Pdf>(rec.normal);
+	Mixture_Pdf p(p0, p1);
 
-	Cosine_Pdf p(rec.normal);
 	scattered = Ray(rec.p, p.generate());
 	pdf_val = p.value(scattered.getDir());
 
 	
 	return emmited + albedo * rec.mat_ptr->scattering_pdf(ray, rec, scattered) *
-		ray_color(scattered, background, world, depth - 1) / pdf_val;
+		ray_color(scattered, background, world,light ,depth - 1) / pdf_val;
 }
 
 int main()
@@ -304,7 +309,7 @@ int main()
 				auto u = (i + random_double()) / (image_width - 1);/*Ranges from 0 to 1 along x axis (left to right)*/
 				auto v = (j + random_double()) / (image_height - 1);/*Ranges from 0 to 1 along y axis (Top to bottom)*/
 				Ray r = cam.getRay(u,v);
-				pixel_color += ray_color(r, background, world, max_depth);
+				pixel_color += ray_color(r, background, world,lights ,max_depth);
 			}
 			write_color(std::cout, pixel_color,samples_per_pixel);
 		}

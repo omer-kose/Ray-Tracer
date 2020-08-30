@@ -78,7 +78,7 @@ public:
 		return distance_squared / (cosine * area);
 	}
 
-	virtual Vec3 random(const Point3& origin) const override 
+	virtual Vec3 random(const Point3& origin) const override /*Return a random direction towards a random point on the hittable*/
 	{
 		auto random_point = Point3(random_double(x0, x1), k, random_double(z0, z1));
 		return random_point - origin;
