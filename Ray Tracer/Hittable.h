@@ -26,8 +26,8 @@ struct hit_record
 	inline void set_face_normal(const Ray &ray, const Vec3 &outward_normal)
 	{
 		/*Normal directions are determined with respect to ray direction*/
-		/*Front face normals should look to us, whereas back face normals should look inside*/
-		/*We defined outward_normals to look always outside of the surface*/
+		/*Front face normals should look to us, whereas back face normals should look inside (this is a design choice not a rule)*/
+		/*We defined outward_normals initially to look always outside of the surface*/
 		/*So, with this function we correct them*/
 		front_face = dot(ray.getDir(), outward_normal) < 0;
 		/*Reverse backface normals to correctly calculate light calculations*/

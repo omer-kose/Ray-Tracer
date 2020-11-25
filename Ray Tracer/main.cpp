@@ -225,9 +225,9 @@ Color ray_color(const Ray &ray, const Color &background,const Hittable_List &wor
 	
 	/*Objects*/
 	/*0.001 because of floating point approximation errors. */
-	/*Computer might not distinguish whether ray hit to the object or not since at intersection point
-	t is very small. Therefore, it might interpret it as a not hit point so, we compensate that by
-	adding using an epsilon 0.001*/
+	/*Computer might not distinguish whether ray hit to the object or not since at the intersection point
+	t is very small. Therefore, it might interpret it as a not hit point. So, we compensate that by
+	offsetting it with an epsilon 0.001*/
 	if (!world.hit(ray, 0.001, infinity, rec))
 	{
 		return background;
